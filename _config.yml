@@ -3,7 +3,7 @@ title: 开源圈
 SEOTitle: 开源圈 | BY Blog
 header-img: img/post-bg-desk.jpg
 email: liuyuanjiang109@outlook.com
-description: "open source share to every one who need it!"
+description: "open source share to someone who need it!"
 keyword: "masterWuhua, 开源圈"
 url: "https://opensourceclub1.github.io/"          # your host, for absolute URL
 baseurl: ""      # for example, '/blog' if your blog hosted on 'host/blog'
@@ -11,8 +11,8 @@ github_repo: "https://github.com/opensourceclub1" # you code repository
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "Goals determine what you going to be!"
-sidebar-avatar: /img/about-BY-gentle.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
+sidebar-about-description: "open source share to someone who need it!"
+sidebar-avatar: /img/qrcode_for_open_source_club.jpg     # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
 
