@@ -1,0 +1,78 @@
+以下是实现步骤：
+
+步骤 1: 安装所需的库
+首先，安装 Flask、gTTS 和 playsound 库：
+
+bash
+复制代码
+pip install flask gtts playsound
+步骤 2: 编写 Python 程序
+创建一个名为 text_to_speech_server.py 的 Python 文件，并将以下代码粘贴到文件中：
+
+python
+复制代码
+from flask import Flask, request, jsonify
+from gtts import gTTS
+import playsound
+import os
+import threading
+
+app = Flask(__name__)
+
+def play_audio(audio_file):
+    playsound.playsound(audio_file)
+    os.remove(audio_file)
+
+@app.route('/speak', methods=['POST'])
+def speak():
+    data = request.json
+    text = data.get('text')
+    if not text:
+        return jsonify({'error': 'No text provided'}), 400
+
+    # 创建 gTTS 对象
+    tts = gTTS(text=text, lang='zh', slow=False)
+    
+    # 保存为临时音频文件
+    audio_file = 'temp_audio.mp3'
+    tts.save(audio_file)
+    
+    # 使用线程播放音频，这样不会阻塞 HTTP 请求的响应
+    threading.Thread(target=play_audio, args=(audio_file,)).start()
+    
+    return jsonify({'message': 'Audio is being played'}), 200
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
+步骤 3: 打包程序
+使用 PyInstaller 打包程序：
+
+安装 PyInstaller：
+
+bash
+复制代码
+pip install pyinstaller
+使用 PyInstaller 打包程序：
+
+bash
+复制代码
+pyinstaller --onefile --add-data "path/to/your/virtualenv/Lib/site-packages/gtts:." text_to_speech_server.py
+请将 path/to/your/virtualenv/Lib/site-packages/gtts 替换为你环境中的实际路径。这条命令将程序打包为一个独立的可执行文件。
+
+步骤 4: 部署到 Windows 工控机
+将 dist 文件夹中的 text_to_speech_server.exe 文件拷贝到工控机上。你可以使用命令提示符或 PowerShell 启动服务：
+
+bash
+复制代码
+text_to_speech_server.exe
+测试
+你可以使用 curl 或 Postman 测试 HTTP 接口。示例 curl 命令：
+
+bash
+复制代码
+curl -X POST http://<工控机的IP>:5000/speak -H "Content-Type: application/json" -d "{\"text\":\"你好，世界\"}"
+注意事项
+音频播放：确保工控机上安装了能够播放音频的设备和驱动程序。
+防火墙：如果工控机有防火墙，确保允许通过 5000 端口进行 HTTP 请求。
+依赖项：打包时，请确保所有依赖项正确包括在内。
+如果有其他问题或需要进一步的调整，随时告诉我！
